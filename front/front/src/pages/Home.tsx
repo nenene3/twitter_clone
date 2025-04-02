@@ -9,6 +9,7 @@ const Home = (props: Props) => {
             const data = await response.json()
             console.log(data)
         }
+
         fetchPosts()
     },[])
   return (
