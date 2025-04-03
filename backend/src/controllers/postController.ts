@@ -59,10 +59,12 @@ export const updatePost = async (req: Request, res: Response) => {
 };
 
 export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
-  const {userId} = req.params
-  console.log(userId)
+  const {id} = req.params
+  console.log(req.params)
+  console.log(id)
   try{
-    const posts =await Post.find({author:userId}).populate('author')
+    console.log(id)
+    const posts =await Post.find({author:id}).populate('author')
     if(posts.length){
       res.status(200)
       res.json(posts)

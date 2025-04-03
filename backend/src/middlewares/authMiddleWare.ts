@@ -21,6 +21,7 @@ export const protectAuth = async (
       const decoded = jwt.verify(token, config.JWT_SECRET) as JwtPayload;
       if (decoded && typeof decoded === "object" && "userId" in decoded) {
         req.user = await User.findById(decoded.userId);
+        console.log('pass')
         next();
       }
     } catch (e) {
