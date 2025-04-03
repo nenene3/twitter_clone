@@ -1,6 +1,13 @@
 import mongoose from 'mongoose'
 
-const postSchema = new mongoose.Schema({
+interface IPost {
+  title: string;
+  content: string;
+  author: mongoose.Schema.Types.ObjectId;
+  createdAt: Date;
+}
+
+const postSchema = new mongoose.Schema<IPost>({
   title: {
     type: String,
     required: true,
@@ -20,6 +27,6 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-const Post = mongoose.model('Post', postSchema)
+const Post =  mongoose.model<IPost>('Post', postSchema)
 
 export default Post

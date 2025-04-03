@@ -4,6 +4,7 @@ import bcryptjs from "bcryptjs";
 
 import User from "../models/UserModel";
 import generateToken from "../utils/authUtils";
+import { RequestWithUser } from "../middlewares/authMiddleWare";
 
 export const register = async (req: Request, res: Response) => {
   
@@ -62,6 +63,25 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 export const logout = async (req: Request, res: Response) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'logged out' });
+};
+
+export const getUser = async (req: RequestWithUser, res: Response) => {
+
+  const user = await User.findById(req.user?._id).select('-password');
+  res.json(user);
+};
+
+export const getcurrentuser = async (req: RequestWithUser, res: Response) => {
+  const user = await User.findById(req.user?._id).select('-password');
+  res.json(user);
+};
+
+export const logOut = async (req: Request, res: Response) => {
   res.cookie('jwt', '', {
     httpOnly: true,
     expires: new Date(0),

@@ -22,12 +22,14 @@ router.get('/users',async(req,res)=>{
          
         const users = await User.find().select('+password')
         res.json(users)
-        
+
     }catch(e){
         res.json({error:'error'})
     }
 })
 
+router.get('/user',protectAuth,authController.getUser)
 router.post('/logout',authController.logout)
+router.get('/currentuser',protectAuth,authController.getcurrentuser)
 
 export default router
