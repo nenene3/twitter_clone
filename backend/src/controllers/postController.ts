@@ -57,3 +57,20 @@ export const updatePost = async (req: Request, res: Response) => {
     return;
   }
 };
+
+export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
+  const {userId} = req.params
+  console.log(userId)
+  try{
+    const posts =await Post.find({author:userId}).populate('author')
+    if(posts.length){
+      res.status(200)
+      res.json(posts)
+    }else{
+      res.json({message:'user got no posts'})
+    }
+  }catch(e){
+    console.log('lol')
+    throw new Error('no posts')
+  }
+}

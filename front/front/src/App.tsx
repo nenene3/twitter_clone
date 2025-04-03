@@ -11,6 +11,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./features/auth/LoginPage";
 import RegisterPage from "./features/auth/RegisterPage";
+import UserProfile from "./features/user/UserProfile";
 
 function App() {
   const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ function App() {
                 </Route>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/user/:userId" element={<UserProfile />} />
               </Routes>
               
             </BrowserRouter>
