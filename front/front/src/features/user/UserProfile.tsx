@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { IPost } from '@/types/Post'
 import Post from '../posts/Post'
 import List from '@/components/List'
-
+import CreatePost from '../posts/CreatePost'
 
 const UserProfile = () => {
     const {userId} = useParams()
@@ -19,6 +19,7 @@ const UserProfile = () => {
     }
   return (
     <div className=' container mx-auto'>
+      <CreatePost />
         <List items={data} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>
     </div>
   )

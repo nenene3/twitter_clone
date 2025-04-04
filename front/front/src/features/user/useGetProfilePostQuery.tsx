@@ -4,7 +4,7 @@ import axios from "axios";
 
 const useGetProfilePostQuery = ({ userId }: { userId: string | number }) => {
   const { data, isError, isLoading } = useQuery({
-    queryKey: ["userProfile", userId],
+    queryKey: ["posts", userId],
     queryFn: async () => {
       const res = await axios.get(`/api/posts/user/${userId}`, { withCredentials: true });
       return res.data;

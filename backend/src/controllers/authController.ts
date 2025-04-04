@@ -77,8 +77,8 @@ export const getUser = async (req: RequestWithUser, res: Response) => {
 };
 
 export const getcurrentuser = async (req: RequestWithUser, res: Response) => {
-  const user = await User.findById(req.user?._id).select('-password');
-  res.json(user);
+  const user = req!.user
+  res.json({id:user?._id,username:user?.username,email:user?.email});
 };
 
 export const logOut = async (req: Request, res: Response) => {

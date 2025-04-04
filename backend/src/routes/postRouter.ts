@@ -17,5 +17,8 @@ router.route("/:id").put(protectAuth, postPolicy.update, postController.updatePo
 
 
 router.route("/").get(postController.getPosts);
-router.route("/").post(protectAuth, postController.AddPost);
+router.route("/").post((req,res,next)=>{
+    console.log('you got here')
+    next()
+},protectAuth, postController.AddPost);
 router.route("/:id/comment").post(protectAuth, postController.commentPost);

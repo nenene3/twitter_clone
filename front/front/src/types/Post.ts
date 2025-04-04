@@ -1,13 +1,13 @@
-export interface IPost {
+export type  IPost = {
     _id: string;
     title: string;
     content: string;
-    author: IUser;
+    author: string;
     createdAt: Date;
 }
 
 
-export interface IUser {
+export type IUser = {
     _id: string;
     username: string;
     email: string;

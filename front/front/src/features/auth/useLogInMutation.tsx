@@ -7,10 +7,10 @@ const UseLogInMutation = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     onSuccess: (data) => {
-      console.log(data);
+      // console.log(data);
     },
     onError: (error) => {
-      console.log(error);
+      // console.log(error);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["auth"] });

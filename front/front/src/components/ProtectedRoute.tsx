@@ -1,27 +1,21 @@
-import React from 'react'
-import { useAuth } from '../context/AuthProvider'
-import { Navigate, Outlet } from 'react-router'
-import useGetUserQuery from '../features/auth/useGetUserQuery'
-type Props = {}
+import React from "react";
+import { useAuth } from "../context/AuthProvider";
+import { Navigate, Outlet } from "react-router"; // Fixed import from react-router-dom
 
-const ProtectedRoute = (props: Props) => {
+const ProtectedRoute = () => {
+  const { user, isPending, isError } = useAuth();
   
+  if (isPending) {
+    return <div className="flex justify-center items-center h-screen bg-red-500">Loading...</div>;
+  }
+  
+  if (isError || !user) {
+    // console.log('login' + user)
+    // console.log(isError)
+    return <Navigate to="/login" replace />;
+  }
+  
+  return <Outlet />;
+};
 
-  const {data:user,isLoading,isFetching,isError} = useGetUserQuery()
-  if(isLoading){
-    return <div>Loading...</div>
-  }
-  if(isError){
-    return <div>Error...</div>
-  }
-  if(isFetching){
-    return <div>Fetching...</div>
-  }
-  return (
-    <div>
-        {user ? <Outlet /> : <Navigate to="/login" />}
-    </div>
-  )
-}
-
-export default ProtectedRoute
+export default ProtectedRoute;

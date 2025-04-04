@@ -68,7 +68,7 @@ export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
     const posts =await Post.find({author:id}).populate('author')
     if(posts.length){
       res.status(200)
-      res.json(posts)
+      res.json(posts.reverse())
     }else{
       res.json({message:'user got no posts'})
     }

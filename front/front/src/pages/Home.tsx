@@ -5,7 +5,7 @@ type Props = {}
 
 const Home = (props: Props) => {
   const { data, isLoading, isError } = useGetPosts()
-  console.log(data)
+  // console.log(data)
     // useEffect(()=>{
     //     const fetchPosts = async ()=>{
     //         const response = await fetch("/api/posts")

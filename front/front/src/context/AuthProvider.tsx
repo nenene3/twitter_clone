@@ -1,53 +1,45 @@
-import useGetUserQuery from "@/features/auth/useGetUserQuery";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import useGetUserQuery from "@/features/auth/useGetUserQuery";
+import { User } from "@/types/User";
 
-interface User {
-  _id: string;
-  username: string;
-  email: string;
-  password: string;
-  data: any;
+
+
+interface AuthContextType {
+  user: User | null;
+  isPending: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  isAuthenticated: boolean;
 }
 
-const AuthContext = createContext<{
-  user: User | null;
-  setUser: (user: User | null) => void;
-  isLoading: boolean;
-  isError: boolean;
-}>({
+const AuthContext = createContext<AuthContextType>({
   user: null,
-  setUser: () => {},
-  isLoading: false,
+  isPending: false,
+  isSuccess: false,
   isError: false,
+  isAuthenticated: false,
 });
 
 export const useAuth = () => {
-  try {
-    return useContext(AuthContext);
-  } catch (e) {
+  const context = useContext(AuthContext);
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+  return context;
 };
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const { data:user, isPending, isSuccess, isError } = useGetUserQuery();
+  
 
-  const { data, isLoading, isFetching, isError } = useGetUserQuery();
-  console.log(data);
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    }
+  
 
-    if (data) {
-      setUser(data);
-    } else {
-      setUser(null);
-    }
-  }, [data,isLoading]);
+  const isAuthenticated = isSuccess && !!user;
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isLoading, isError }}>
+    <AuthContext.Provider
+      value={{ user: user || null, isPending, isSuccess, isError, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );
