@@ -18,3 +18,4 @@ router.route("/:id").put(protectAuth, postPolicy.update, postController.updatePo
 
 router.route("/").get(postController.getPosts);
 router.route("/").post(protectAuth, postController.AddPost);
+router.route("/:id/comment").post(protectAuth, postController.commentPost);

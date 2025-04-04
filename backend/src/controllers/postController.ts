@@ -34,6 +34,7 @@ export const AddPost = async (req: RequestWithUser, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
   const { id } = req.params;
   const post = await Post.findById(id);
+  
   res.json(post);
 };
 
@@ -75,4 +76,25 @@ export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
     console.log('lol')
     throw new Error('no posts')
   }
+}
+
+
+
+export const commentPost = async(req:RequestWithUser,res:Response)=>{
+  const {id} = req.params
+  const {title,content} = req.body
+  const user = req.user as {_id:string}
+  const post = await Post.findById(id)
+  if(!post){
+    res.status(404).json({message:'post not found'})
+    return
+  }
+  const newComment = new Post({
+    title,
+    content,
+    author:user._id,
+    replyTo:post._id
+  })
+  await newComment.save()
+  res.status(201).json({message:'comment added'})
 }
