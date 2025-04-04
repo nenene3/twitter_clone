@@ -5,11 +5,11 @@ import { IPost } from '@/types/Post'
 import Post from '../posts/Post'
 import List from '@/components/List'
 import CreatePost from '../posts/CreatePost'
-
+import { useAuth } from '@/context/AuthProvider'
 const UserProfile = () => {
     const {userId} = useParams()
-    
-    const {data,isError,isLoading} = useGetProfilePostQuery({userId:userId || 0})
+    const {user} = useAuth()
+    const {data:posts,isError,isLoading} = useGetProfilePostQuery({userId:userId ??  user!.id})
 
     if(isLoading){
         return <h1>loading </h1>
@@ -20,7 +20,7 @@ const UserProfile = () => {
   return (
     <div className=' container mx-auto'>
       <CreatePost />
-        <List items={data} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>
+        <List items={posts} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>
     </div>
   )
 

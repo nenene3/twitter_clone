@@ -40,6 +40,9 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/user/:userId" element={<UserProfile />} />
+                <Route element={<ProtectedRoute />}>
+                <Route path="/user" element={<UserProfile />} />
+                </Route>
               </Routes>
             </BrowserRouter>
           </AuthProvider>
