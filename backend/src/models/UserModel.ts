@@ -5,10 +5,13 @@ export interface IUser extends mongoose.Document {
   username: string;
   email: string;
   password: string;
-  comparePassword(enterPassword:string):boolean
+  comparePassword(enterPassword:string):Promise<boolean>,
+  getFollowingCount():Promise<number>,
+  getFollowersCount():Promise<number>
 }
 import jwt, { Secret }  from "jsonwebtoken";
 import config from "../config/config";
+import { FollowModel } from "./FollowModel";
 
 
 
@@ -40,6 +43,16 @@ userSchema.pre('save',async function(next){
 userSchema.methods.comparePassword = async function (enterPassword:string) {
     return await bcrypt.compare(enterPassword, this.password);
   };
+
+userSchema.methods.getFollowersCount = async function(){
+  return await FollowModel.countDocuments({following:this._id})
+}
+
+userSchema.methods.getFollowingCount = async function(){
+  return await FollowModel.countDocuments({user:this._id})
+}
+
+
 
 
 const User = mongoose.model<IUser>('User',userSchema)

@@ -20,7 +20,7 @@ const UserProfile = () => {
   return (
     <div className=' container mx-auto'>
       <CreatePost />
-        <List items={posts} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>
+      {posts?.length &&  <List items={posts} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>}
     </div>
   )
 

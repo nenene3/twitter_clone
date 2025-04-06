@@ -1,5 +1,5 @@
-import React from 'react'
-import {QueryClient, useMutation, useQueryClient} from '@tanstack/react-query'
+
+import { useMutation, useQueryClient} from '@tanstack/react-query'
 import axios from 'axios'
 
 
