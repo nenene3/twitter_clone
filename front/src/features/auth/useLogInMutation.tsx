@@ -15,7 +15,7 @@ const UseLogInMutation = () => {
       const res = await axios.post(
         "http://localhost:3000/api/auth/login",
         data,
-        { withCredentials: true }
+        { withCredentials: true, }
       );
       return res.data;
     },

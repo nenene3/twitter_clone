@@ -61,14 +61,20 @@ export const updatePost = async (req: Request, res: Response) => {
 
 export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
   const {id} = req.params
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 20;
+  const skip = (page - 1) * limit;
   console.log(req.params)
   console.log(id)
   try{
     console.log(id)
-    const posts =await Post.find({author:id}).populate('author')
+    const posts =await Post.find({author:id}).populate('author').skip(skip).limit(limit).sort({createdAt:-1})
+
+    const hasnext = await Post.countDocuments({author:id}) > page * limit
+    console.log(hasnext)
     if(posts.length){
       res.status(200)
-      res.json(posts.reverse())
+      res.json({posts:posts,hasnext})
     }else{
       res.json({message:'user got no posts'})
     }
@@ -77,6 +83,7 @@ export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
     throw new Error('no posts')
   }
 }
+
 
 
 
@@ -89,6 +96,7 @@ export const commentPost = async(req:RequestWithUser,res:Response)=>{
     res.status(404).json({message:'post not found'})
     return
   }
+  console.log('created')
   const newComment = new Post({
     title,
     content,

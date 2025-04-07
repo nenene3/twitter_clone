@@ -13,6 +13,9 @@ const generateToken = (res:Response, userId:any) => {
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
+  
+  
+
   console.log('cookie created')
   console.log('token'+token)
 };

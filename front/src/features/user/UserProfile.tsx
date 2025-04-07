@@ -6,10 +6,11 @@ import Post from '../posts/Post'
 import List from '@/components/List'
 import CreatePost from '../posts/CreatePost'
 import { useAuth } from '@/context/AuthProvider'
+import { Button } from '@/components/ui/button'
 const UserProfile = () => {
     const {userId} = useParams()
     const {user} = useAuth()
-    const {data:posts,isError,isLoading} = useGetProfilePostQuery({userId:userId ??  user!.id})
+    const {data,isError,isLoading,fetchNextPage,hasNextPage} = useGetProfilePostQuery({userId:userId ??  user!.id})
 
     if(isLoading){
         return <h1>loading </h1>
@@ -17,10 +18,12 @@ const UserProfile = () => {
     if(isError){
         return <h1>error </h1>
     }
+    console.log(data)
   return (
     <div className=' container mx-auto'>
       <CreatePost />
-      {posts?.length &&  <List items={posts} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>}
+      {data?.pages.length &&  <List items={data.pages.flatMap((page)=>page.posts)} renderItem={(post:IPost)=><Post key={post._id} post={post}/>}/>}
+      {hasNextPage && <Button className='' onClick={()=>fetchNextPage()}>load more</Button>}
     </div>
   )
 
