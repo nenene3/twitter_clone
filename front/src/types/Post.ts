@@ -12,8 +12,5 @@ export type IUser = {
     username: string;
     email: string;
     createdAt: Date;
+    avatar?: string;
 }
-
-
-
-

@@ -8,7 +8,7 @@ type Props = {
   postId: string;
 };
 
-const CommentPost = ({ postId }: Props) => {
+const CreateComment = ({ postId }: Props) => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
@@ -101,4 +101,4 @@ const CommentPost = ({ postId }: Props) => {
   );
 };
 
-export default CommentPost;
+export default CreateComment;

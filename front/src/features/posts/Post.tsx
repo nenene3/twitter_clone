@@ -2,7 +2,9 @@ import React from "react";
 import { IPost } from "../../types/Post";
 import { MessageCircle, Heart, Repeat, Share } from "lucide-react";
 import { useState } from "react";
-import CommentPost from "./CommentPost";
+import CommentPost from "./CreateComment";
+import useGetCommentQuery from "./useGetCommentQuery";
+import CommentList from "./CommentList";
 type Props = {
   post: IPost;
 };
@@ -16,7 +18,7 @@ const Post = ({ post }: Props) => {
     day: "numeric",
   });
   const [openWriteComment, setOpenWriteComment] = useState<boolean>(false);
-
+  const [openCommentList, setOpenCommentList] = useState<boolean>(false);
   return (
     <div
       className="border-b border-gray-200 dark:border-gray-800 p-4 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition cursor-pointer"
@@ -54,10 +56,15 @@ const Post = ({ post }: Props) => {
 
           {/* Action buttons */}
           {!openWriteComment ? (
-            <div className="flex justify-between mt-3 max-w-md text-gray-500 dark:text-gray-400" onClick={(e:MouseEvent)=>e.stopPropagation()}>
+            <div
+              className="flex justify-between mt-3 max-w-md text-gray-500 dark:text-gray-400"
+              onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                e.stopPropagation()
+              }
+            >
               <div className="flex items-center group">
                 <div className="p-2 rounded-full group-hover:bg-blue-100 group-hover:text-blue-500 dark:group-hover:bg-blue-900/40 dark:group-hover:text-blue-400">
-                  <MessageCircle size={18} />
+                  <MessageCircle size={18} onClick={()=>setOpenCommentList((isOpen)=>!isOpen)}/>
                 </div>
               </div>
               <div className="flex items-center group">
@@ -79,6 +86,7 @@ const Post = ({ post }: Props) => {
           ) : (
             <CommentPost postId={post._id} />
           )}
+          {openCommentList && <CommentList postId={post._id} />}
         </div>
       </div>
     </div>

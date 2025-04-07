@@ -22,3 +22,4 @@ router.route("/").post((req,res,next)=>{
     next()
 },protectAuth, postController.AddPost);
 router.route("/:id/comment").post(protectAuth, postController.commentPost);
+router.route("/:id/comments").get(postController.getComments);

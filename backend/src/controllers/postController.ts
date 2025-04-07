@@ -68,7 +68,7 @@ export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
   console.log(id)
   try{
     console.log(id)
-    const posts =await Post.find({author:id}).populate('author').skip(skip).limit(limit).sort({createdAt:-1})
+    const posts =await Post.find({author:id}).where('replyTo').equals(null).populate('author').skip(skip).limit(limit).sort({createdAt:-1})
 
     const hasnext = await Post.countDocuments({author:id}) > page * limit
     console.log(hasnext)
@@ -105,4 +105,20 @@ export const commentPost = async(req:RequestWithUser,res:Response)=>{
   })
   await newComment.save()
   res.status(201).json({message:'comment added'})
+}
+
+export const getComments = async(req:RequestWithUser,res:Response)=>{
+
+  const {id} = req.params
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const skip = (page - 1) * limit;
+  const comments = await Post.find({replyTo:id}).populate('author').skip(skip).limit(limit).sort({createdAt:-1})
+  const hasnext = await Post.countDocuments({replyTo:id}) > page * limit
+  if(comments.length){
+    res.status(200).json({comments,hasnext})
+  }else{
+    console.log('no comments found')
+    res.status(200).json({comments:[],hasnext:false})
+  }
 }

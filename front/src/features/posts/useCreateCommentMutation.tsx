@@ -14,7 +14,7 @@ const useCreateCommentMutation = ({postId}: Props) => {
             return response.data
         },
         onSettled() {
-            queryClient.invalidateQueries({queryKey:['posts',postId]})
+            queryClient.invalidateQueries({queryKey:['comments',postId]})
         },
     })
 
