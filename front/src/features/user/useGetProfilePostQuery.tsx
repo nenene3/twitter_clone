@@ -6,6 +6,7 @@ const useGetProfilePostQuery = ({ userId }: { userId: string | number }) => {
     queryKey: ["posts", userId],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await axios.get(`/api/posts/user/${userId}?page=${pageParam}`, { withCredentials: true });
+      console.log('user profile',res.data)
       return res.data;
     },
     enabled: !!userId, 

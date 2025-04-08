@@ -5,14 +5,20 @@ type Props = {
 };
 
 const useGetCommentQuery = (props: Props) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage,isPending } =
     useInfiniteQuery({
       queryKey: ["comments", props.postId],
-      queryFn: async ({ pageParam = 1 }) => {
+      queryFn: async ({ pageParam = 1,signal }) => {
         const response = await axios.get(
           `/api/posts/${props.postId}/comments?page=${pageParam}`,
-          { withCredentials: true }
+          { withCredentials: true ,signal}
         );
+        //  await new Promise((res,req)=>{
+        //   setTimeout(() => {
+        //     res('')
+        //   }, 40);
+        //   req()
+        // })
         console.log(response.data);
         return response.data;
       },
@@ -26,7 +32,7 @@ const useGetCommentQuery = (props: Props) => {
       enabled: !!props.postId,
     });
 
-  return { data, fetchNextPage, hasNextPage, isFetchingNextPage };
+  return { data, fetchNextPage, hasNextPage, isFetchingNextPage,isPending };
 };
 
 export default useGetCommentQuery;

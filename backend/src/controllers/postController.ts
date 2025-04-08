@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { RequestWithUser } from "../middlewares/authMiddleWare";
 import Post from "../models/postModel";
+import User from "../models/UserModel";
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
@@ -61,6 +62,15 @@ export const updatePost = async (req: Request, res: Response) => {
 
 export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
   const {id} = req.params
+  let user 
+  try{
+     user = await User.find({_id:id})
+  }catch(e){
+    res.status(400)
+    res.json({message:'user not found'})
+    return
+  }
+
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 20;
   const skip = (page - 1) * limit;
@@ -74,7 +84,7 @@ export const getUserPosts = async(req:RequestWithUser,res:Response)=>{
     console.log(hasnext)
     if(posts.length){
       res.status(200)
-      res.json({posts:posts,hasnext})
+      res.json({posts:posts,hasnext,user})
     }else{
       res.json({message:'user got no posts'})
     }

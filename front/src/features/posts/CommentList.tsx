@@ -8,12 +8,20 @@ type Props = {
 };
 
 const CommentList = ({ postId }: Props) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetCommentQuery({ postId });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage,isPending } = useGetCommentQuery({ postId });
+
+
+
+  if(isPending){
+    return <h2>loading</h2>
+  }
 
   if (!data || data.pages.length === 0) {
     return <div>No comments found</div>;
   }
+
+  
+
 
   return (
     <div className="mt-4">
